@@ -1,0 +1,11 @@
+package com.tienda.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.tienda.models.entities.Usuarios;
+
+public interface UsuarioRepository extends JpaRepository<Usuarios, Integer> {
+	
+	Usuarios findByEmail(String email);
+
+}
