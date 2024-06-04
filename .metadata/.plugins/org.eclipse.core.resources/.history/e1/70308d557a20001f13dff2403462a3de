@@ -1,0 +1,40 @@
+package com.tienda.services.implementation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.tienda.models.dtos.NuevoUsuarioDTO;
+import com.tienda.models.entities.Usuarios;
+import com.tienda.repositories.UsuarioRepository;
+import com.tienda.services.UsuarioService;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class UsuarioImpl implements UsuarioService{
+	
+	@Autowired
+	private UsuarioRepository userRepo;
+
+	@Override
+	@Transactional(rollbackOn = Exception.class)
+	public void crearUsuario(NuevoUsuarioDTO info) {
+		
+		//busco que no exista un usuario con ese correo
+		Usuarios usuario = userRepo.findByEmail(info.getEmail());
+		
+		if (usuario != null) {
+			
+		}
+		
+	}
+
+	@Override
+	public Usuarios buscarPorCorreo(String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+}

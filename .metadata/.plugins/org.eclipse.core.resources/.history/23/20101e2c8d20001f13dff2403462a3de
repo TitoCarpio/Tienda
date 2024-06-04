@@ -1,0 +1,12 @@
+package com.tienda.services;
+
+import com.tienda.models.dtos.NuevoUsuarioDTO;
+import com.tienda.models.dtos.ResLoginDTO;
+
+public interface UsuarioService {
+	
+	void crearUsuario(NuevoUsuarioDTO info);
+	
+	ResLoginDTO buscarPorCorreo(String email);
+
+}

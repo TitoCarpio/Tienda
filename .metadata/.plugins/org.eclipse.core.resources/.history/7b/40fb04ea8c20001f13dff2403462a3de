@@ -1,0 +1,9 @@
+package com.tienda.models.dtos;
+
+import lombok.Data;
+
+@Data
+public class ResLoginDTO {
+	private String email;
+	private int id;
+}

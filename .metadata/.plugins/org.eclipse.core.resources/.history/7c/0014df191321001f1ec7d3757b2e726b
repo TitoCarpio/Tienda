@@ -1,0 +1,29 @@
+package com.tienda.services.implementation;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.tienda.models.entities.Compras;
+import com.tienda.services.CompraService;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class ComprasImpl implements CompraService {
+
+	@Override
+	@Transactional(rollbackOn = Exception.class)
+	public void crearCompra() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Compras> buscarPorUsuario(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+}

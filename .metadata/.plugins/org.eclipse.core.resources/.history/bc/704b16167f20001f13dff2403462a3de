@@ -1,0 +1,83 @@
+package com.tienda.exception;
+
+import java.sql.SQLException;
+import java.util.Date;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class ControllerExceptionHandler {
+	
+	@ExceptionHandler(ResourceAlreadyExistsException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ResponseEntity<?> alreadyExistsException(ResourceAlreadyExistsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                ex.getMessage(),
+                new Date()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+	
+	@ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ResponseEntity<?> notFoundException(ResourceNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMessage(),
+                new Date()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+	
+	@ExceptionHandler(Exception.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<?> globalException(Exception ex) {
+        ex.printStackTrace();
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                ex.getMessage(),
+                new Date()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+//    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> dataIntegrityViolationException(DataIntegrityViolationException ex) {
+        ex.printStackTrace();
+        Throwable rootCause = ex.getRootCause();
+        String errorMessage = "An error occurred while processing your request";
+
+        if (rootCause instanceof SQLException sqlException) {
+
+            String sqlState = sqlException.getSQLState();
+            if (sqlState.equals("23502")) {
+                errorMessage = "Not null violation. Null value cannot be inserted or updated in a column defined as NOT NULL.";
+            } else if (sqlState.equals("23503")) {
+                errorMessage = "Foreign key constraint violation. This record is still referenced.";
+            } else if (sqlState.equals("23505")) {
+                errorMessage = "Unique violation. This record already exists.";
+            }
+        }
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                errorMessage,
+                new Date()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+}

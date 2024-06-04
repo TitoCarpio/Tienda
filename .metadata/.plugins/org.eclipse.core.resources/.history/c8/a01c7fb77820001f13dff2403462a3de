@@ -1,0 +1,28 @@
+package com.tienda.services.implementation;
+
+import org.springframework.stereotype.Service;
+
+import com.tienda.models.entities.Usuarios;
+import com.tienda.services.UsuarioService;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class UsuarioImpl implements UsuarioService{
+
+	@Override
+	@Transactional(rollbackOn = Exception.class)
+	public void crearUsuario() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Usuarios buscarPorCorreo(String email) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+}

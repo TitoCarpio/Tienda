@@ -1,0 +1,5 @@
+package com.tienda.models.dtos;
+
+public class AuthRequestDTO {
+
+}

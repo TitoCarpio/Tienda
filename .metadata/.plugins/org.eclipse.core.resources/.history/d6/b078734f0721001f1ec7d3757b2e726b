@@ -1,0 +1,62 @@
+package com.tienda.services.implementation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.tienda.exception.ResourceAlreadyExistsException;
+import com.tienda.exception.ResourceNotFoundException;
+import com.tienda.models.dtos.AuthRequestDTO;
+import com.tienda.models.dtos.NuevoUsuarioDTO;
+import com.tienda.models.dtos.ResLoginDTO;
+import com.tienda.models.entities.Usuarios;
+import com.tienda.repositories.UsuarioRepository;
+import com.tienda.services.UsuarioService;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class UsuarioImpl implements UsuarioService {
+
+	@Autowired
+	private UsuarioRepository userRepo;
+
+	@Override
+	@Transactional(rollbackOn = Exception.class)
+	public void crearUsuario(NuevoUsuarioDTO info) {
+
+		// busco que no exista un usuario con ese correo
+		Usuarios usuario = userRepo.findByEmail(info.getEmail());
+
+		if (usuario != null)
+			throw new ResourceAlreadyExistsException("El usuario ya existe");
+
+//		long saldo = 100.00;
+		usuario = new Usuarios();
+		usuario.setNombre(info.getNombre());
+		usuario.setEmail(info.getEmail());
+		usuario.setContrasena(info.getContrasena());
+		usuario.setRol("USER");
+		usuario.setSaldo((long) 100.00);
+		
+
+		userRepo.save(usuario);
+	}
+
+	@Override
+	public ResLoginDTO buscarPorCorreo(AuthRequestDTO info) {
+		// busco que no exista un usuario con ese correo
+		Usuarios usuario = userRepo.findByEmail(info.getEmail());
+
+		if (usuario == null)
+			throw new ResourceNotFoundException("No se encontro el usuario");
+		
+		if (usuario.getContrasena().equals(info.getContrasena())) {
+			ResLoginDTO response = new ResLoginDTO(usuario.getEmail(), usuario.getId());
+			return response;
+		}
+		
+		return null;
+		
+	}
+
+}

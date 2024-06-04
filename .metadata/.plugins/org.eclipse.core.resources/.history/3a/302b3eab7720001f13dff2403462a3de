@@ -1,0 +1,5 @@
+package com.tienda.services.implementation;
+
+public class ArticuloImpl {
+
+}

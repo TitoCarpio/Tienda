@@ -1,0 +1,6 @@
+spring.application.name=Tienda-APi
+
+#credenciales de conexion
+spring.datasource.url=jdbc:postgresql://localhost:5432/Tienda
+spring.datasource.username=postgres
+spring.datasource.password=carpio2001

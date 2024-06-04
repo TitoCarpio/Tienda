@@ -1,0 +1,32 @@
+package com.tienda.services.implementation;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.tienda.models.entities.Articulos;
+import com.tienda.services.ArticulService;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class ArticuloImpl implements ArticulService {
+
+	@Override
+	@Transactional(rollbackOn = Exception.class)
+	public void crerArticulo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Articulos> todos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
+	
+
+}

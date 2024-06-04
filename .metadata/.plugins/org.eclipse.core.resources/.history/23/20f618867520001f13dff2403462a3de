@@ -1,0 +1,5 @@
+package com.tienda.models.entities;
+
+public class Articulos {
+
+}
